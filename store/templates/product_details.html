@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %} Product Details {% endblock title %}
+{% load cart %}
+{% load custom_filter %}
+{% block content %}
+<link rel="stylesheet" href="../../static/stylesheet/product_details.css">
+<div class="container p-4 m-4 d-flex">
+<div class="card">
+    <div class="card-body d-flex">
+    <div class="col-4">
+    <img  src="{{product.image.url}}" width="75%">
+    </div>
+    <div class="col-3">
+    </div>
+     <div class="col-5">
+         <p style="font-size:large;"><b>{{product.name}}</b></p>
+         <p style="font-size: large;">{{product.descripton}}</p>
+         <p><span style="font-size:large;">{{product.price|currency_symbol}}</span><br/>
+         <span id="tax_color">inclusive of all taxes</span></p>
+         <p style="font-size:large;">Select Size</p>
+         <div class="d-flex">
+          <!-- <form action="{% url 'edit_profile' %}" method="GET" class="">
+            <select hidden name="size" id="size"></select> -->
+            <p class="bordercorners"><input hidden type="radio" name="size" value="38" >38</p>
+            <p class="bordercorners ml-4"><input hidden type="radio" name="size" value="40">40</p>
+            <p class="bordercorners ml-4"><input hidden type="radio" name="size" value="42">42</p>
+            <p class="bordercorners ml-4"><input hidden type="radio" name="size" value="44">44</p>
+      
+         </div>
+         <div class="mt-4">  
+   <div class="card-footer p-0 no-gutters">
+  {% if product|is_in_cart:request.user.id %}
+     <div class="row no-gutters">
+    <form action="/#{{product.id}}" method="POST" class="col-2">
+      {% csrf_token %}
+      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
+      <input hidden type="text" class="form-control" name="remove" value="True" placeholder="">
+      <input type="submit" value="-" class="btn btn-block btn-secondary col"/>
+    </form>
+    <div class="text-center col">{{product|cart_quantity:request.user.id}} in cart </div>
+    <form action="/#{{product.id}}" method="POST" class="col-2">
+      {% csrf_token %}
+      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
+      <input type="submit" value="+" class="btn btn-block btn-secondary col"/>
+    </form>
+  </div>
+  {% else %}
+  <form action="/#{{product.id}}" method="POST" class="">
+    {% csrf_token %}
+    <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
+    <input type="submit" class="float-right btn btn-light form-control" value="Add to Cart">
+  </form>
+  {% endif %}
+   </div>
+  </div>
+        </div> 
+     </div>
+    </div>
+    </div>
+</div>
+
+
+{%endblock content%}

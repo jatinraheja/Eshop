@@ -1,0 +1,9 @@
+.bordercorners{
+    border: 1px solid grey;
+    border-radius: 50%;
+    padding: 15px;
+
+}
+#tax_color{
+    color:rgb(23, 199, 170);
+}

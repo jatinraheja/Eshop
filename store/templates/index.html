@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %} EShop{% endblock title %}
+{% block cart_length %}{{cart_size}}{% endblock cart_length %}
+{% load cart %}
+{% load custom_filter %}
+{% block content %}
+<div class="row mx-auto mt-4">
+  <div class="col-lg-3">
+   <div class="list-group">
+        <a href="/" class="list-group-item list-group-item-action">All Products</a>
+     {% for category in categories %}
+     <a href="/?category={{category.id}}" class="list-group-item list-group-item-action">{{category.name}}</a>
+     {% endfor %}
+   </div>
+  </div>
+<div class="col-lg-9">
+<div class="row mx-auto">
+  {% for product in products %}
+  <div class="card mx-auto mb-3" id={{product.id}} style="width: 18rem;">
+  <img src="{{product.image.url}}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text">{{product.category.name}}</p>
+    <p class="card-text"><b>{{product.price|currency_symbol}}</b></p>
+    <form action="/product_details" method="get">
+      <input hidden type="text" value="{{product.id}}" name="product_id">
+      <p class="card-text"><input type="submit" value="check details"></p>
+    </form>
+  </div>
+  
+   <div class="card-footer p-0 no-gutters">
+  {% if product|is_in_cart:request.user.id %}
+     <div class="row no-gutters">
+    <form action="/#{{product.id}}" method="POST" class="col-2">
+      {% csrf_token %}
+      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
+      <input hidden type="text" class="form-control" name="remove" value="True" placeholder="">
+      <input type="submit" value="-" class="btn btn-block btn-secondary col"/>
+    </form>
+    <div class="text-center col">{{product|cart_quantity:request.user.id}} in cart </div>
+    <form action="/#{{product.id}}" method="POST" class="col-2">
+      {% csrf_token %}
+      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
+      <input type="submit" value="+" class="btn btn-block btn-secondary col"/>
+    </form>  
+  </div>
+  {% else %}
+  <form action="/#{{product.id}}" method="POST" class="">
+    {% csrf_token %}
+    <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
+    <input type="submit" class="float-right btn btn-light form-control" value="Add to Cart">
+  </form>
+  {% endif %}
+   </div>
+  </div>
+{% endfor %}
+</div>
+</div>
+</div>
+
+{% endblock content %}
+</html>
