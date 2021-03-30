@@ -16,5 +16,5 @@ urlpatterns = [
     path('change_password', change_password.ChangePassword.as_view(), name="change_password"),
     path('reset_password', reset_password_by_email.ResetPassword.as_view(), name="reset_password"),
     path('reset_password_link/<uidb64>/<token>',reset_password_link.ResetPasswordLink.as_view(),name="set_new_password"),
-    path('product_details',product_details.ProductDetails.as_view(),name="product_details")
+    path('product_details/',product_details.ProductDetails.as_view(),name="product_details")
 ]

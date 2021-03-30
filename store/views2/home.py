@@ -20,31 +20,10 @@ class Index(View):
 
     def post(self,request):
         product = request.POST.get('product')
-        # cart = request.session.get('cart')
         product_data = Product.get_product_by_id(product)
         cart2 = Cart.get_cart_by_product(product_data,request.user.id)
         remove = request.POST.get('remove')
         size = request.POST.get('size')
-        # if cart:
-        #     quantity = cart.get(product)
-        #     if quantity:
-        #         if remove:
-        #             if quantity == 1:
-        #                 cart.pop(product)
-        #             else:
-        #                 cart[product] = quantity - 1
-        #         else:
-        #             cart[product] = quantity + 1
-        #
-        #     else:
-        #         cart[product] = 1
-        #
-        # else:
-        #     cart = {}
-        #     cart[product] = 1
-        #
-        # request.session["cart"] = cart
-
         if cart2:
             quantity2 = Cart.get_product_quantity_by_product(product_data,request.user.id)
             print(f'Quantity2 {quantity2}')

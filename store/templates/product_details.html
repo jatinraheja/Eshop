@@ -3,7 +3,29 @@
 {% load cart %}
 {% load custom_filter %}
 {% block content %}
-<link rel="stylesheet" href="../../static/stylesheet/product_details.css">
+{% load static %}
+<style>
+ .bordercorners{
+    border: 1px solid grey;
+    border-radius: 50%;
+    padding: 15px
+}
+.tax_color{
+    color: blue;
+}
+.bordercorners:hover {
+  border: 1px solid red;
+}
+.bordercorners::selection {
+  border: 1px solid blue;
+}
+a:visited{
+  color: white;
+  border: 1px solid green;
+}
+</style>
+
+
 <div class="container p-4 m-4 d-flex">
 <div class="card">
     <div class="card-body d-flex">
@@ -16,48 +38,50 @@
          <p style="font-size:large;"><b>{{product.name}}</b></p>
          <p style="font-size: large;">{{product.descripton}}</p>
          <p><span style="font-size:large;">{{product.price|currency_symbol}}</span><br/>
-         <span id="tax_color">inclusive of all taxes</span></p>
+         <span class="tax_color">inclusive of all taxes</span></p>
          <p style="font-size:large;">Select Size</p>
+         <form action="{% url 'product_details' %}" method="post">
+          {% csrf_token %}
          <div class="d-flex">
-          <!-- <form action="{% url 'edit_profile' %}" method="GET" class="">
-            <select hidden name="size" id="size"></select> -->
-            <p class="bordercorners"><input hidden type="radio" name="size" value="38" >38</p>
-            <p class="bordercorners ml-4"><input hidden type="radio" name="size" value="40">40</p>
-            <p class="bordercorners ml-4"><input hidden type="radio" name="size" value="42">42</p>
-            <p class="bordercorners ml-4"><input hidden type="radio" name="size" value="44">44</p>
-      
-         </div>
-         <div class="mt-4">  
+            <p id="38" name="size_display" class="bordercorners" onclick="myfunction(38)">38</p>
+            <p id="40" name="size_display" class="bordercorners ml-4" onclick="myfunction(40)">40</p>
+            <p id="42" name="size_display" class="bordercorners ml-4" onclick="myfunction(42)">42</p>
+            <p id="44" name="size_display" class="bordercorners ml-4" onclick="myfunction(44)">44</p>
+            <input id="size" name="size1" hidden type="text"  value="38" >
+          </div>
+  <div class="mt-4">  
    <div class="card-footer p-0 no-gutters">
-  {% if product|is_in_cart:request.user.id %}
-     <div class="row no-gutters">
-    <form action="/#{{product.id}}" method="POST" class="col-2">
-      {% csrf_token %}
-      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
-      <input hidden type="text" class="form-control" name="remove" value="True" placeholder="">
-      <input type="submit" value="-" class="btn btn-block btn-secondary col"/>
-    </form>
-    <div class="text-center col">{{product|cart_quantity:request.user.id}} in cart </div>
-    <form action="/#{{product.id}}" method="POST" class="col-2">
-      {% csrf_token %}
-      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
-      <input type="submit" value="+" class="btn btn-block btn-secondary col"/>
-    </form>
-  </div>
-  {% else %}
-  <form action="/#{{product.id}}" method="POST" class="">
-    {% csrf_token %}
     <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">
     <input type="submit" class="float-right btn btn-light form-control" value="Add to Cart">
-  </form>
-  {% endif %}
-   </div>
   </div>
+</div>
+ </form>
+   
+  
         </div> 
      </div>
     </div>
     </div>
-</div>
+<script>
+ function myfunction(id){
+   const selected_size =  document.getElementById(id)
+  selected_size.style.border = "1px solid green";
+ const all_sizes = document.querySelectorAll('p[name=size]')
+ size = document.getElementById('size')
+ size.value = id
+ for(const size of all_sizes) {
+   console.log(size)
+   console.log(selected_size)
+   if (selected_size != size){
+     size.style.border = "1px solid grey"
+   }
+
+
+ }
+  
+
+ } 
+</script>
 
 
 {%endblock content%}
