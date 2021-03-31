@@ -1,33 +1,13 @@
 {% extends 'base.html' %}
 {% block title %} Product Details {% endblock title %}
+{% block cart_length %}{{cart_size}}{% endblock cart_length %}
 {% load cart %}
 {% load custom_filter %}
 {% block content %}
 {% load static %}
-<style>
- .bordercorners{
-    border: 1px solid grey;
-    border-radius: 50%;
-    padding: 15px
-}
-.tax_color{
-    color: blue;
-}
-.bordercorners:hover {
-  border: 1px solid red;
-}
-.bordercorners::selection {
-  border: 1px solid blue;
-}
-a:visited{
-  color: white;
-  border: 1px solid green;
-}
-</style>
-
-
+<link rel="stylesheet"  href="{%  static  'product_details.css'  %}">
 <div class="container p-4 m-4 d-flex">
-<div class="card">
+    <div class="card">
     <div class="card-body d-flex">
     <div class="col-4">
     <img  src="{{product.image.url}}" width="75%">
@@ -35,6 +15,12 @@ a:visited{
     <div class="col-3">
     </div>
      <div class="col-5">
+         {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
+        <strong>{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
          <p style="font-size:large;"><b>{{product.name}}</b></p>
          <p style="font-size: large;">{{product.descripton}}</p>
          <p><span style="font-size:large;">{{product.price|currency_symbol}}</span><br/>
@@ -47,7 +33,7 @@ a:visited{
             <p id="40" name="size_display" class="bordercorners ml-4" onclick="myfunction(40)">40</p>
             <p id="42" name="size_display" class="bordercorners ml-4" onclick="myfunction(42)">42</p>
             <p id="44" name="size_display" class="bordercorners ml-4" onclick="myfunction(44)">44</p>
-            <input id="size" name="size1" hidden type="text"  value="38" >
+            <input id="size" name="size1" hidden type="text"  value="" >
           </div>
   <div class="mt-4">  
    <div class="card-footer p-0 no-gutters">

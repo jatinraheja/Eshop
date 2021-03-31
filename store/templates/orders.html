@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %} Cart {% endblock title %}
+{% block cart_length %}{{cart_size}}{% endblock cart_length %}
 {% load cart %}
 {% load custom_filter %}
 {% block content %}

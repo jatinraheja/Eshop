@@ -1,13 +1,12 @@
 from django.views import View
 from django.shortcuts import render,redirect
-from store.models.product import Product
 from store.models.cart import Cart
-from django.contrib.auth.models import User
 class Cart_View(View):
     def get(self,request):
         if request.user.is_authenticated:
             cart = Cart.get_cart_by_user_id(request.user.id)
-            return render(request,'cart.html',{'Cart':cart})
+            cart_size = Cart.get_all_products_by_user(request.user.id)
+            return render(request,'cart.html',{'Cart':cart,'cart_size':len(cart_size)})
 
         else:
             return redirect('homepage')
@@ -24,8 +23,6 @@ class Cart_View(View):
             Cart.delete_by_id(cart_id)
 
         elif cart:
-            # import pdb;
-            # pdb.set_trace()
             cart_object = Cart.get_cart_by_id(cart)
             quantity = cart_object.quantity
             if quantity:

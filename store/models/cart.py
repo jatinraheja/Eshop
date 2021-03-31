@@ -8,8 +8,8 @@ class Cart(models.Model):
     size = models.IntegerField(default=0)
 
     @staticmethod
-    def get_cart_by_product(product,user_id):
-        cart = Cart.objects.filter(product=product,user=user_id)
+    def get_cart_by_product(product,user_id,size):
+        cart = Cart.objects.filter(product=product,user=user_id,size=size)
         if cart:
             return cart[0]
         else:
@@ -20,8 +20,8 @@ class Cart(models.Model):
         return Cart.objects.filter(user = user_id)
 
     @staticmethod
-    def get_product_quantity_by_product(product,user_id):
-        cart = Cart.objects.filter(product=product,user=user_id)
+    def get_product_quantity_by_product(product,user_id,size= size):
+        cart = Cart.objects.filter(product=product,user=user_id,size=size)
         if cart:
             print(f'cart quantity {cart[0].get_quantity()}')
             return cart[0].get_quantity()
@@ -29,8 +29,8 @@ class Cart(models.Model):
             return None
 
     @staticmethod
-    def delete_by_product(product,user_id):
-        Cart.objects.filter(product=product,user=user_id).delete()
+    def delete_by_product(product,user_id,size):
+        Cart.objects.filter(product=product,user=user_id,size=size).delete()
 
     @staticmethod
     def delete_by_id(cart_id):

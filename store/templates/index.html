@@ -4,10 +4,12 @@
 {% load cart %}
 {% load custom_filter %}
 {% block content %}
+{% load static %}
+<link rel="stylesheet"  href="{%  static  'index.css'  %}">
 <div class="row mx-auto mt-4">
   <div class="col-lg-3">
    <div class="list-group">
-        <a href="/" class="list-group-item list-group-item-action">All Products</a>
+        <a href="/" class="filters list-group-item list-group-item-action">All Products</a>
      {% for category in categories %}
      <a href="/?category={{category.id}}" class="list-group-item list-group-item-action">{{category.name}}</a>
      {% endfor %}
@@ -21,42 +23,15 @@
   <div class="card-body">
     <h5 class="card-title">{{product.name}}</h5>
     <p class="card-text">{{product.category.name}}</p>
-    <p class="card-teproduct_detailsproduct_detailsxt"><b>{{product.price|currency_symbol}}</b></p>
+    <p class="card-text"><b>{{product.price|currency_symbol}}</b></p>
     <form action="product_details" method="get">
       <input hidden type="text" value="{{product.id}}" name="product_id">
-      <p class="card-text"><input type="submit" value="check details"></p>
+      <button class="btn1" type="submit" value="">check details</button>
     </form>
   </div>
-  
-<!--   <div class="card-footer p-0 no-gutters">-->
-<!--  {% if product|is_in_cart:request.user.id %}-->
-<!--     <div class="row no-gutters">-->
-<!--    <form action="/#{{product.id}}" method="POST" class="col-2">-->
-<!--      {% csrf_token %}-->
-<!--      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">-->
-<!--      <input hidden type="text" class="form-control" name="remove" value="True" placeholder="">-->
-<!--      <input type="submit" value="-" class="btn btn-block btn-secondary col"/>-->
-<!--    </form>-->
-<!--    <div class="text-center col">{{product|cart_quantity:request.user.id}} in cart </div>-->
-<!--    <form action="/#{{product.id}}" method="POST" class="col-2">-->
-<!--      {% csrf_token %}-->
-<!--      <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">-->
-<!--      <input type="submit" value="+" class="btn btn-block btn-secondary col"/>-->
-<!--    </form>  -->
-<!--  </div>-->
-<!--  {% else %}-->
-<!--  <form action="/#{{product.id}}" method="POST" class="">-->
-<!--    {% csrf_token %}-->
-<!--    <input hidden type="text" class="form-control" name="product" value={{product.id}} placeholder="">-->
-<!--    <input type="submit" class="float-right btn btn-light form-control" value="Add to Cart">-->
-<!--  </form>-->
-<!--  {% endif %}-->
-<!--   </div>-->
   </div>
 {% endfor %}
 </div>
 </div>
 </div>
-
 {% endblock content %}
-</html>

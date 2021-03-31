@@ -1,7 +1,6 @@
 from django.views import View
 from django.shortcuts import render,redirect
 from store.models import Customer
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 class EditProfile(View):
     def get(self,request):
@@ -26,23 +25,24 @@ class EditProfile(View):
             error_message = "last name required"
         elif not username:
             error_message = "username required"
-        elif not customer.user.username == username:
-            if User.objects.filter(username=request.user.username).exists():
+        elif customer.user.username != username:
+            if User.objects.filter(username=username).exists():
                 error_message = "Username already taken"
 
-        elif customer.phone != phone:
+        elif customer.phone != int(phone):
             if Customer.objects.filter(phone=phone).exists():
                 error_message = "Account with this phone no already present"
-
         if error_message:
             return render(request,'edit_profile.html',{'error':error_message,'customer':data})
         else:
-            customer.first_name = first_name
-            customer.last_name = last_name
-            customer.username = username
+            user = User.objects.filter(username=request.user.username)[0]
+            user.first_name = first_name
+            user.last_name = last_name
+            user.username = username
+            user.save(update_fields=['first_name','last_name','username'])
             customer.phone = phone
             customer.save()
-        return redirect('profile')
+            return redirect('profile')
 
 
 

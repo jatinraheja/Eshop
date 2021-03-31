@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block title %} Cart {% endblock title %}
+{% block cart_length %}{{cart_size}}{% endblock cart_length %}
 {% load cart %}
 {% load custom_filter %}
 {% block content %}
@@ -15,6 +16,7 @@
              <th>Product</th>
              <th>Product Name</th>
              <th>Quantity</th>
+             <th>Size</th>
              <th>Price</th>
              <th>Total</th>
          </tr>
@@ -25,7 +27,7 @@
              <td>{{forloop.counter}}</td>
              <td colspan="2"><img class="rounded-circle" src="{{cart.product.image.url}}" width="150" /></td>
              <td>{{cart.product.name}}</td>
-             {% comment %} <td>{{cart.quantity}} {% endcomment %}
+             
              <td>
     <div class="row no-gutters">
     <form action="#{{cart.id}}" method="POST" class="col-2">
@@ -43,6 +45,7 @@
   </div>
              
              </td>
+             <td>{{cart.size}}</td>
              <td>{{cart.product.price|currency_symbol}}</td>
              <td><p>{{cart.product|product_total_price:request.user.id}}</p>
               <form action="{% url 'cart' %}" method="post">
